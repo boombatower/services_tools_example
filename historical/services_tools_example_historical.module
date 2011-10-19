@@ -1,0 +1,27 @@
+<?php
+/**
+ * @file
+ * Provides primary Drupal hook implementations.
+ *
+ * @author Jimmy Berry ("boombatower", http://drupal.org/user/214218)
+ */
+
+/**
+ * Implements hook_services_historical_info().
+ */
+function services_tools_example_historical_services_historical_info() {
+  return array(
+    'services_tools_example' => array(
+      'endpoint' => 'services_tools_example',
+      'version' => '1.0',
+    ),
+  );
+}
+
+/**
+ * Implements hook_services_historical_endpoint().
+ */
+function services_tools_example_historical_services_historical_endpoint() {
+  $endpoints = services_tools_example_default_services_endpoint();
+  return $endpoints['services_tools_example'];
+}

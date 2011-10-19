@@ -1,0 +1,85 @@
+<?php
+/**
+ * @file
+ * Provides primary Drupal hook implementations.
+ *
+ * @author Jimmy Berry ("boombatower", http://drupal.org/user/214218)
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function services_tools_example_permission() {
+  $permissions = array();
+
+  $permissions['create paste'] = array(
+    'title' => t('Create a paste'),
+    'description' => t('Create a paste.'),
+  );
+
+  return $permissions;
+}
+
+/**
+ * Implements hook_services_resources().
+ */
+function services_tools_example_services_resources() {
+  return array(
+    'paste' => array(
+      'create' => array(
+        'help' => 'Create a paste.',
+        'callback' => 'services_tools_example_paste_create',
+        'access arguments' => array('create paste'),
+        'args' => array(
+          array(
+            'name' => 'text',
+            'type' => 'string',
+            'description' => 'The text to paste.',
+            'source' => 'data',
+            'optional' => FALSE,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Get all the pastes.
+ *
+ * @return
+ *   An associative array of pastes keyed by paste ID.
+ */
+function services_tools_example_paste_get_all() {
+  if (!($pastes = &drupal_static('services_tools_example_paste'))) {
+    $pastes = variable_get('services_tools_example_paste', array());
+  }
+  return $pastes;
+}
+
+/**
+ * Create a paste.
+ *
+ * @param $text
+ *   A string of text to create paste from.
+ * @return
+ *   An associative array reperesenting the newly created paste.
+ */
+function services_tools_example_paste_create($text) {
+  $pastes = services_tools_example_paste_get_all();
+  $paste = $pastes[] = array(
+    'id' => count($pastes),
+    'text' => $text,
+  );
+  variable_set('services_tools_example_paste', $pastes);
+  return $paste;
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function services_tools_example_ctools_plugin_api($owner, $api) {
+  if ($owner == 'services' && $api == 'services') {
+    return array('version' => 3);
+  }
+}
