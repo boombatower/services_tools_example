@@ -13,7 +13,7 @@ function services_tools_example_historical_services_historical_info() {
   return array(
     'services_tools_example' => array(
       'endpoint' => 'services_tools_example',
-      'version' => '1.1',
+      'version' => '1.2',
     ),
   );
 }
@@ -66,5 +66,20 @@ function services_tools_example_historical_services_historical_update_1_0(&$reso
         ),
       ),
     ),
+  );
+}
+
+/**
+ * Implements services_historical_update_N().
+ */
+function services_tools_example_historical_services_historical_update_1_1(&$resources, $version) {
+  $resources['paste']['create']['help'] = 'Create a paste (with optional title).';
+  $resources['paste']['create']['args'][0]['source'] = array('data' => 'text');
+  $resources['paste']['create']['args'][] = array(
+    'name' => 'title',
+    'type' => 'string',
+    'description' => 'Title to associate with the paste.',
+    'source' => array('data' => 'title'),
+    'optional' => TRUE,
   );
 }
