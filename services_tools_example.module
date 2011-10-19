@@ -16,6 +16,10 @@ function services_tools_example_permission() {
     'title' => t('Create a paste'),
     'description' => t('Create a paste.'),
   );
+  $permissions['retrieve paste'] = array(
+    'title' => t('Retrieve a paste'),
+    'description' => t('Retrieve a paste.'),
+  );
 
   return $permissions;
 }
@@ -44,6 +48,20 @@ function services_tools_example_services_resources() {
             'description' => 'Title to associate with the paste.',
             'source' => array('data' => 'title'),
             'optional' => TRUE,
+          ),
+        ),
+      ),
+      'retrieve' => array(
+        'help' => 'Retrieve a paste.',
+        'callback' => 'services_tools_example_paste_retrieve',
+        'access arguments' => array('retrieve paste'),
+        'args' => array(
+          array(
+            'name' => 'id',
+            'type' => 'int',
+            'description' => 'The ID of the paste to retrieve.',
+            'source' => array('path' => 0),
+            'optional' => FALSE,
           ),
         ),
       ),
@@ -83,6 +101,19 @@ function services_tools_example_paste_create($text, $title = NULL) {
   );
   variable_set('services_tools_example_paste', $pastes);
   return $paste;
+}
+
+/**
+ * Retrieve a paste by ID.
+ *
+ * @param $id
+ *   The ID of the paste to retrieve.
+ * @return
+ *   An associative array reperesenting a paste.
+ */
+function services_tools_example_paste_retrieve($id) {
+  $pastes = services_tools_example_paste_get_all();
+  return isset($pastes[$id]) ? $pastes[$id] : FALSE;
 }
 
 /**

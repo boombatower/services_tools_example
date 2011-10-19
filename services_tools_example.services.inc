@@ -27,6 +27,9 @@ function services_tools_example_default_services_endpoint() {
         'create' => array(
           'enabled' => 1,
         ),
+        'retrieve' => array(
+          'enabled' => 1,
+        ),
       ),
     ),
   );
